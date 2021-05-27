@@ -9,6 +9,28 @@ const client = new OAuth2Client(
   );
 
 
+exports.auth = (req, res, next) => {
+    let token = req.headers["authorization"];
+    token = token.split(" ")[1]; // Access token
+  
+    jwt.verify(token, "access", (err, user) => {
+      if (user) {
+        req.user = user;
+        next();
+      } else if (err.message === "jwt expired") {
+        return res.json({
+          success: false,
+          message: "Access token expired",
+        });
+      } else {
+        console.log(err);
+        return res
+          .status(403)
+          .json({ success: false, message: "User not authenticated" });
+      }
+    });
+  }
+
   exports.googlelogin = (req, res) => {
     const { tokenId } = req.body;
   
@@ -78,3 +100,35 @@ const client = new OAuth2Client(
         }
       });
   };
+
+
+exports.renewAccessToken = (req, res) => {
+    const refreshToken = req.body.token;
+    if (!refreshToken || !refreshTokens.includes(refreshToken)) {
+      return res.status(403).json({
+        success: false,
+        message: "User not authenticated",
+      });
+    }
+    jwt.verify(refreshToken, "refresh", (err, user) => {
+      if (!err) {
+        const accessToken = jwt.sign({ username: user.name }, "access", {
+          expiresIn: "20s",
+        });
+        return res.status(201).json({
+          success: true,
+          accessToken,
+        });
+      } else {
+        return res.status(403).json({
+          success: false,
+          message: "User not authenticated",
+        });
+      }
+    });
+  };
+  
+  exports.protected = (req,res) =>{
+    res.send("Inside protector");
+  }
+ 
