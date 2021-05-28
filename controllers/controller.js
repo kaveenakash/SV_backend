@@ -5,7 +5,7 @@ let refreshTokens = [];
 
 const { OAuth2Client } = require("google-auth-library");
 const client = new OAuth2Client(
-    "361577374258-c45jn6o7muma9cj62ptm5r7ivvtdfa8k.apps.googleusercontent.com"
+    "361577374258-ljid0kudbrvdkmj6dhnfk56gtlap9kvh.apps.googleusercontent.com"
   );
 
 
@@ -38,7 +38,7 @@ exports.auth = (req, res, next) => {
       .verifyIdToken({
         idToken: tokenId,
         audience:
-          "361577374258-c45jn6o7muma9cj62ptm5r7ivvtdfa8k.apps.googleusercontent.com",
+          "361577374258-ljid0kudbrvdkmj6dhnfk56gtlap9kvh.apps.googleusercontent.com",
       })
       .then((response) => {
         const { email_verified, name, email } = response.payload;

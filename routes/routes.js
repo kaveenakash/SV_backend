@@ -7,6 +7,10 @@ const {googlelogin,renewAccessToken,protected,auth} = require('../controllers/co
 router.post('/googlelogin',googlelogin);
 router.post('/renewAccessToken',renewAccessToken)
 router.post('/protected',auth,protected)
-
+router.get("/data",(req,res) =>{
+    res.status(200).json({
+        message:"Success"
+    })
+})
 
 module.exports = router
