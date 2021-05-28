@@ -66,7 +66,7 @@ exports.auth = (req, res, next) => {
                   message: "Signin Success",
                 });
               } else {
-                let password = email + process.env.JWT_SIGNIN_KEY;
+                let password = email + "mypersonalkey1234";
                 let newUser = new User({ name, email, password });
                 newUser.save((err, data) => {
                   if (err) {
@@ -76,7 +76,7 @@ exports.auth = (req, res, next) => {
                   }
                   const token = jwt.sign(
                     { _id: data._id },
-                    process.env.JWT_SIGNIN_KEY,
+                    "mypersonalkey1234",
                     { expiresIn: "7d" }
                   );
                   const { _id, name, email } = newUser;
